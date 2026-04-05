@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /private/
+Allow: /
+
+Sitemap: https://github.com/trustjonathan/CHEMISTRY/sitemap.xml
