@@ -25,6 +25,57 @@ type TurnstileApi = {
 
 const getTurnstile = () => (window as Window & { turnstile?: TurnstileApi }).turnstile;
 
+const fallbackResources: Resource[] = [
+  {
+    category: 'notes',
+    storage_bucket: 'study-hub-resources',
+    storage_path: 'chemistry/organic-chemistry-notes.pdf',
+    original_filename: 'organic-chemistry-notes.pdf',
+    title: 'Organic Chemistry Notes',
+    size_bytes: 1240000,
+    level: 'A-Level',
+    year: 2024,
+    resource_type: 'pdf',
+    uploaded_at: '2024-08-18T12:00:00.000Z'
+  },
+  {
+    category: 'notes',
+    storage_bucket: 'study-hub-resources',
+    storage_path: 'chemistry/periodic-table-summary.pdf',
+    original_filename: 'periodic-table-summary.pdf',
+    title: 'Periodic Table Summary',
+    size_bytes: 680000,
+    level: 'O-Level',
+    year: 2023,
+    resource_type: 'pdf',
+    uploaded_at: '2023-09-10T09:30:00.000Z'
+  },
+  {
+    category: 'papers',
+    storage_bucket: 'study-hub-resources',
+    storage_path: 'chemistry/chemistry-past-paper-2022.pdf',
+    original_filename: 'chemistry-past-paper-2022.pdf',
+    title: 'Chemistry Past Paper 2022',
+    size_bytes: 2200000,
+    level: 'A-Level',
+    year: 2022,
+    resource_type: 'pdf',
+    uploaded_at: '2022-11-20T14:45:00.000Z'
+  },
+  {
+    category: 'notes',
+    storage_bucket: 'study-hub-resources',
+    storage_path: 'chemistry/chemical-equations-guide.pdf',
+    original_filename: 'chemical-equations-guide.pdf',
+    title: 'Chemical Equations Guide',
+    size_bytes: 930000,
+    level: 'S.5',
+    year: 2024,
+    resource_type: 'pdf',
+    uploaded_at: '2024-02-04T08:20:00.000Z'
+  }
+];
+
 const archive = document.querySelector<HTMLElement>('[data-chemistry-archive]');
 
 if (archive) {
@@ -198,11 +249,19 @@ if (archive) {
     return rows as Resource[];
   }
 
+  function applyResourceSet(items: Resource[]): void {
+    state.items = items;
+    const levels = [...new Set(items.map((item) => item.level).filter((value): value is string => Boolean(value)))].sort();
+    levelFilter.replaceChildren(new Option('All levels', ''));
+    for (const level of levels) levelFilter.add(new Option(level, level));
+    render();
+  }
+
   async function loadArchive(): Promise<void> {
     if (!supabaseUrl || !anonKey) {
-      status.textContent = 'The archive is not connected yet. Supabase public configuration is required.';
-      list.replaceChildren(makeState('Chemistry resources are temporarily unavailable.', true));
-      loadMore.hidden = true;
+      status.textContent = 'Using the Chemistry preview archive until live data is connected.';
+      list.replaceChildren(makeState('Showing preview resources while the live archive is being configured.'));
+      applyResourceSet(fallbackResources);
       return;
     }
 
@@ -210,11 +269,7 @@ if (archive) {
     list.replaceChildren(makeState('Connecting to the shared archive...'));
     try {
       const [notes, papers] = await Promise.all([fetchCategory('notes'), fetchCategory('papers')]);
-      state.items = [...notes, ...papers];
-      const levels = [...new Set(state.items.map((item) => item.level).filter((value): value is string => Boolean(value)))].sort();
-      levelFilter.replaceChildren(new Option('All levels', ''));
-      for (const level of levels) levelFilter.add(new Option(level, level));
-      render();
+      applyResourceSet([...notes, ...papers]);
     } catch (error) {
       status.textContent = error instanceof Error ? error.message : 'The Chemistry archive could not be loaded.';
       list.replaceChildren(makeState('The archive could not be loaded. Check the connection and try again.', true));
