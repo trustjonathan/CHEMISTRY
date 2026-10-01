@@ -36,25 +36,47 @@ const base = `${import.meta.env.BASE_URL}/`;
   </head>
   <body>
     <header class="site-header" id="top">
-      <a class="brand" href={base} aria-label="Chemistry archive home">
+      <a class="brand" href="https://trustjonathan.github.io/STUDY-HUB/" aria-label="Study Hub home">
         <img src={`${base}logo.png`} width="38" height="38" alt="" />
         <span>Study Hub</span>
       </a>
-      <nav aria-label="Main navigation">
+      <nav class="site-nav" aria-label="Main navigation">
         <a href="https://trustjonathan.github.io/STUDY-HUB/">Home</a>
-        <a href={base} aria-current="page">Chemistry</a>
-        <a href="https://trustjonathan.github.io/BIOLOGY/">Biology</a>
-        <a href="https://trustjonathan.github.io/MATHEMATICS/archive.html">Mathematics</a>
+        <a href={`${base}#overview`}>Overview</a>
+        <a href={`${base}#archive`} aria-current="page">Archive</a>
+        <a href="https://trustjonathan.github.io/BIOLOGY/archive.html">Biology archive</a>
+        <a href="https://trustjonathan.github.io/CHEMISTRY/archive.html">Chemistry archive</a>
+        <a href="https://trustjonathan.github.io/MATHEMATICS/archive.html">Mathematics archive</a>
       </nav>
     </header>
     <slot />
-    <footer class="site-footer">
-      <a class="brand" href={base}>
-        <img src={`${base}logo.png`} width="32" height="32" alt="" />
-        <span>Study Hub / Chemistry</span>
-      </a>
-      <p>Free Chemistry study resources for focused revision.</p>
-      <a class="back-to-top" href="#top">Back to top <span aria-hidden="true">↑</span></a>
+    <footer class="site-footer" id="footer-links">
+      <div class="footer-group">
+        <h3>Study Hub</h3>
+        <a href="https://trustjonathan.github.io/STUDY-HUB/">Home</a>
+        <a href={`${base}#overview`}>Overview</a>
+        <a href={`${base}#normal-pages`}>Normal pages</a>
+      </div>
+      <div class="footer-group">
+        <h3>Subjects</h3>
+        <a href="https://trustjonathan.github.io/BIOLOGY/">Biology</a>
+        <a href="https://trustjonathan.github.io/CHEMISTRY/">Chemistry</a>
+        <a href="https://trustjonathan.github.io/MATHEMATICS/archive.html">Mathematics</a>
+      </div>
+      <div class="footer-group">
+        <h3>Archives</h3>
+        <a href="https://trustjonathan.github.io/BIOLOGY/archive.html">Biology archive</a>
+        <a href="https://trustjonathan.github.io/CHEMISTRY/archive.html">Chemistry archive</a>
+        <a href="https://trustjonathan.github.io/MATHEMATICS/archive.html">Mathematics archive</a>
+      </div>
+      <div class="footer-brand">
+        <a class="brand" href={base}>
+          <img src={`${base}logo.png`} width="32" height="32" alt="" />
+          <span>Study Hub / Chemistry</span>
+        </a>
+        <p>Free Chemistry study resources for focused revision.</p>
+        <a class="back-to-top" href="#top">Back to top <span aria-hidden="true">↑</span></a>
+      </div>
     </footer>
   </body>
 </html>
