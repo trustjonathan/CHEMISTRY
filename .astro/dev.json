@@ -1,0 +1,22 @@
+{
+	"pid": 5536,
+	"port": 4323,
+	"url": "http://localhost:4323",
+	"urls": {
+		"local": [
+			"http://localhost:4323/"
+		],
+		"network": [
+			"http://172.23.208.1:4323/",
+			"http://192.168.45.198:4323/",
+			"http://172.22.0.1:4323/"
+		],
+		"networkInterfaceNames": [
+			"vEthernet (Default Switch)",
+			"Wi-Fi",
+			"vEthernet (WSL (Hyper-V firewall))"
+		]
+	},
+	"background": false,
+	"startedAt": "2026-10-01T19:01:47.585Z"
+}

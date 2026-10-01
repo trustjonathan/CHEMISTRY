@@ -1,0 +1,60 @@
+---
+import '../styles/archive.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+}
+
+const {
+  title = 'Chemistry Archive | Study Hub',
+  description = 'Search Chemistry notes and exam practice resources in the Study Hub archive.',
+  canonical = 'https://trustjonathan.github.io/CHEMISTRY/'
+} = Astro.props;
+const base = `${import.meta.env.BASE_URL}/`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f8f6f0" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content="https://trustjonathan.github.io/CHEMISTRY/chemistry.jpg" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href={`${base}logo.png`} type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <a class="brand" href={base} aria-label="Chemistry archive home">
+        <img src={`${base}logo.png`} width="38" height="38" alt="" />
+        <span>Study Hub</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="https://trustjonathan.github.io/STUDY-HUB/">Home</a>
+        <a href={base} aria-current="page">Chemistry</a>
+        <a href="https://trustjonathan.github.io/BIOLOGY/">Biology</a>
+        <a href="https://trustjonathan.github.io/MATHEMATICS/archive.html">Mathematics</a>
+      </nav>
+    </header>
+    <slot />
+    <footer class="site-footer">
+      <a class="brand" href={base}>
+        <img src={`${base}logo.png`} width="32" height="32" alt="" />
+        <span>Study Hub / Chemistry</span>
+      </a>
+      <p>Free Chemistry study resources for focused revision.</p>
+      <a class="back-to-top" href="#top">Back to top <span aria-hidden="true">↑</span></a>
+    </footer>
+  </body>
+</html>
