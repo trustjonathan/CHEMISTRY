@@ -13,7 +13,6 @@ const {
   canonical = 'https://trustjonathan.github.io/CHEMISTRY/archive.html'
 } = Astro.props;
 const base = `${import.meta.env.BASE_URL}/`;
-const siteRoot = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <!doctype html>
@@ -49,15 +48,15 @@ const siteRoot = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="header-main">
         <nav class="site-nav" aria-label="Chemistry archive navigation">
           <a href="https://trustjonathan.github.io/STUDY-HUB/">Home</a>
-          <a href={`${siteRoot}#overview`}>Overview</a>
-          <a href={`${siteRoot}#archive`} aria-current="page">Archive</a>
+          <a href="#overview">Overview</a>
+          <a href="#archive" aria-current="page">Archive</a>
         </nav>
         <a class="brand" href="https://trustjonathan.github.io/STUDY-HUB/" aria-label="Study Hub home">
           <img src={`${base}logo.png`} width="38" height="38" alt="" />
           <span>Study Hub</span>
         </a>
         <nav class="header-actions" aria-label="Archive actions">
-          <a href={`${siteRoot}#archive`}>Search archive</a>
+          <a href="#archive">Search archive</a>
           <a href="mailto:trusteth777@gmail.com?subject=Chemistry%20resource%20request">Request resource</a>
         </nav>
       </div>
@@ -72,7 +71,7 @@ const siteRoot = import.meta.env.BASE_URL.replace(/\/$/, '');
         </section>
         <section class="mega-nav-group">
           <h2>Chemistry</h2>
-          <a href={siteRoot}>Chemistry archive</a>
+          <a href="https://trustjonathan.github.io/CHEMISTRY/archive.html">Chemistry archive</a>
         </section>
         <section class="mega-nav-group">
           <h2>Mathematics</h2>
@@ -89,23 +88,23 @@ const siteRoot = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="footer-group">
         <h3>Study Hub</h3>
         <a href="https://trustjonathan.github.io/STUDY-HUB/">Home</a>
-        <a href={`${siteRoot}#overview`}>Overview</a>
-        <a href={`${siteRoot}#normal-pages`}>Normal pages</a>
+        <a href="#overview">Overview</a>
+        <a href="#normal-pages">Normal pages</a>
       </div>
       <div class="footer-group">
         <h3>Subjects</h3>
-        <a href="https://trustjonathan.github.io/BIOLOGY/">Biology</a>
+        <a href="https://trustjonathan.github.io/STUDY-HUB/frontend/src/html/biology.html">Biology</a>
         <a href="https://trustjonathan.github.io/STUDY-HUB/frontend/src/html/chemistry.html">Chemistry</a>
-        <a href="https://trustjonathan.github.io/MATHEMATICS/archive.html">Mathematics</a>
+        <a href="https://trustjonathan.github.io/STUDY-HUB/frontend/src/html/mathematics.html">Mathematics</a>
       </div>
       <div class="footer-group">
         <h3>Archives</h3>
         <a href="https://trustjonathan.github.io/BIOLOGY/archive.html">Biology archive</a>
-        <a href={siteRoot}>Chemistry archive</a>
+        <a href="https://trustjonathan.github.io/CHEMISTRY/archive.html">Chemistry archive</a>
         <a href="https://trustjonathan.github.io/MATHEMATICS/archive.html">Mathematics archive</a>
       </div>
       <div class="footer-brand">
-        <a class="brand" href={siteRoot}>
+        <a class="brand" href="https://trustjonathan.github.io/CHEMISTRY/archive.html">
           <img src={`${base}logo.png`} width="32" height="32" alt="" />
           <span>Study Hub / Chemistry</span>
         </a>
