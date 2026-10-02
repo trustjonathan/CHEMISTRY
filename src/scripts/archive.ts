@@ -14,8 +14,7 @@ interface Resource {
 interface ArchiveState {
   items: Resource[];
   category: 'all' | 'notes' | 'papers';
-  page: number;
-  pageSize: number;
+  selectedKey: string | null;
 }
 
 type TurnstileApi = {
@@ -83,13 +82,14 @@ if (archive) {
   const anonKey = archive.dataset.supabaseAnonKey || '';
   const submitFunctionUrl = archive.dataset.submitFunctionUrl || '';
   const turnstileSiteKey = archive.dataset.turnstileSiteKey || '';
-  const state: ArchiveState = { items: [], category: 'all', page: 1, pageSize: 24 };
+  const state: ArchiveState = { items: [], category: 'all', selectedKey: null };
   const list = document.querySelector<HTMLElement>('#resource-list')!;
+  const resourceIndex = document.querySelector<HTMLElement>('#resource-index')!;
+  const resourceIndexCount = document.querySelector<HTMLElement>('#resource-index-count')!;
   const status = document.querySelector<HTMLElement>('#archive-status')!;
   const search = document.querySelector<HTMLInputElement>('#archive-search')!;
   const levelFilter = document.querySelector<HTMLSelectElement>('#level-filter')!;
   const sortOrder = document.querySelector<HTMLSelectElement>('#sort-order')!;
-  const loadMore = document.querySelector<HTMLButtonElement>('#load-more')!;
   const tabs = [...document.querySelectorAll<HTMLButtonElement>('.archive-tabs button')];
   const contributionDialog = document.querySelector<HTMLDialogElement>('#contribution-dialog')!;
   const contributionForm = document.querySelector<HTMLFormElement>('#contribution-form')!;
@@ -164,6 +164,10 @@ if (archive) {
     return element;
   }
 
+  function resourceKey(item: Resource): string {
+    return `${item.category}:${item.storage_bucket}:${item.storage_path}`;
+  }
+
   function filteredItems(): Resource[] {
     const query = search.value.trim().toLowerCase();
     const level = levelFilter.value;
@@ -187,23 +191,64 @@ if (archive) {
 
   function render(): void {
     const filtered = filteredItems();
-    const visible = filtered.slice(0, state.page * state.pageSize);
     list.replaceChildren();
+    resourceIndex.replaceChildren();
     status.textContent = `${filtered.length} resource${filtered.length === 1 ? '' : 's'} found`;
+    resourceIndexCount.textContent = String(filtered.length);
 
     if (!filtered.length) {
-      list.append(makeState(state.items.length ? 'No resources match those filters.' : 'No published Chemistry resources yet.'));
-      loadMore.hidden = true;
+      const message = state.items.length ? 'No resources match those filters.' : 'No published Chemistry resources yet.';
+      resourceIndex.append(makeState(message));
+      list.append(makeState(message));
       return;
     }
 
-    for (const item of visible) {
+    if (!filtered.some((item) => resourceKey(item) === state.selectedKey)) {
+      state.selectedKey = resourceKey(filtered[0]);
+    }
+
+    filtered.forEach((item, index) => {
+      const key = resourceKey(item);
+      const entryId = `chemistry-resource-${index + 1}`;
+      const itemTitle = item.title || item.original_filename || 'Chemistry resource';
+
+      const indexButton = document.createElement('button');
+      indexButton.className = 'resource-index-item';
+      indexButton.type = 'button';
+      indexButton.dataset.resourceKey = key;
+      indexButton.setAttribute('aria-pressed', String(key === state.selectedKey));
+      const number = document.createElement('span');
+      number.className = 'resource-index-number';
+      number.textContent = String(index + 1).padStart(3, '0');
+      const indexTitle = document.createElement('span');
+      indexTitle.className = 'resource-index-title';
+      indexTitle.textContent = itemTitle;
+      indexButton.append(number, indexTitle);
+      indexButton.addEventListener('click', () => {
+        state.selectedKey = key;
+        resourceIndex.querySelectorAll<HTMLButtonElement>('.resource-index-item').forEach((button) => {
+          button.setAttribute('aria-pressed', String(button.dataset.resourceKey === key));
+        });
+        list.querySelectorAll<HTMLElement>('.resource-entry').forEach((entry) => {
+          entry.classList.toggle('is-selected', entry.dataset.resourceKey === key);
+        });
+        document.getElementById(entryId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+      resourceIndex.append(indexButton);
+
       const row = document.createElement('article');
-      row.className = 'resource-row';
+      row.id = entryId;
+      row.className = `resource-entry${key === state.selectedKey ? ' is-selected' : ''}`;
+      row.dataset.resourceKey = key;
+      row.setAttribute('aria-labelledby', `${entryId}-title`);
+
+      const heading = document.createElement('div');
+      heading.className = 'resource-entry-heading';
       const details = document.createElement('div');
       const title = document.createElement('h3');
       title.className = 'resource-title';
-      title.textContent = item.title || item.original_filename || 'Chemistry resource';
+      title.id = `${entryId}-title`;
+      title.textContent = itemTitle;
       const meta = document.createElement('div');
       meta.className = 'resource-meta';
       const category = document.createElement('span');
@@ -217,6 +262,16 @@ if (archive) {
         meta.append(detail);
       }
       details.append(title, meta);
+      heading.append(details);
+
+      if (item.original_filename) {
+        const filename = document.createElement('p');
+        filename.className = 'resource-filename';
+        filename.textContent = item.original_filename;
+        row.append(heading, filename);
+      } else {
+        row.append(heading);
+      }
 
       const open = document.createElement('a');
       open.className = 'resource-open';
@@ -225,11 +280,16 @@ if (archive) {
       open.rel = 'noopener noreferrer';
       open.textContent = 'Open resource';
       open.setAttribute('aria-label', `Open ${title.textContent}`);
-      row.append(details, open);
+      row.append(open);
       list.append(row);
-    }
 
-    loadMore.hidden = visible.length >= filtered.length;
+      if ((index + 1) % 8 === 0 && index < filtered.length - 1) {
+        const adSlot = document.createElement('div');
+        adSlot.className = 'archive-ad-slot';
+        adSlot.dataset.adSlot = `chemistry-archive-${Math.floor((index + 1) / 8)}`;
+        list.append(adSlot);
+      }
+    });
   }
 
   async function fetchCategory(category: 'notes' | 'papers'): Promise<Resource[]> {
@@ -261,6 +321,7 @@ if (archive) {
     if (!supabaseUrl || !anonKey) {
       status.textContent = 'Using the Chemistry preview archive until live data is connected.';
       list.replaceChildren(makeState('Showing preview resources while the live archive is being configured.'));
+      resourceIndex.replaceChildren();
       applyResourceSet(fallbackResources);
       return;
     }
@@ -273,6 +334,7 @@ if (archive) {
     } catch (error) {
       status.textContent = error instanceof Error ? error.message : 'The Chemistry archive could not be loaded.';
       list.replaceChildren(makeState('The archive could not be loaded. Check the connection and try again.', true));
+      resourceIndex.replaceChildren();
       const retry = document.createElement('button');
       retry.className = 'button button-outline';
       retry.type = 'button';
@@ -319,14 +381,12 @@ if (archive) {
 
   tabs.forEach((button) => button.addEventListener('click', () => {
     state.category = (button.dataset.category as ArchiveState['category']) || 'all';
-    state.page = 1;
     tabs.forEach((tab) => tab.setAttribute('aria-pressed', String(tab === button)));
     render();
   }));
-  search.addEventListener('input', () => { state.page = 1; render(); });
-  levelFilter.addEventListener('change', () => { state.page = 1; render(); });
+  search.addEventListener('input', render);
+  levelFilter.addEventListener('change', render);
   sortOrder.addEventListener('change', render);
-  loadMore.addEventListener('click', () => { state.page += 1; render(); });
 
   initializeTurnstile();
   void loadArchive();

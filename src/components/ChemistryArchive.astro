@@ -86,8 +86,16 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
       </div>
 
       <p class="archive-status" id="archive-status" role="status" aria-live="polite">Connecting to the shared archive...</p>
-      <div class="resource-list" id="resource-list" aria-live="polite"></div>
-      <button class="button button-outline load-more" id="load-more" type="button" hidden>Load more</button>
+      <div class="archive-browser">
+        <aside class="resource-index-panel" aria-label="Chemistry resource index">
+          <div class="resource-index-heading">
+            <h3>All resources</h3>
+            <span id="resource-index-count"></span>
+          </div>
+          <nav class="resource-index" id="resource-index" aria-label="Jump to a resource"></nav>
+        </aside>
+        <div class="resource-list" id="resource-list" aria-live="polite"></div>
+      </div>
     </section>
 
     <section class="contribute-band" aria-labelledby="contribute-title">
