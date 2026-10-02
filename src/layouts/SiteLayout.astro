@@ -12,7 +12,6 @@ const {
   description = 'Search Chemistry notes and exam practice resources in the Study Hub archive.',
   canonical = 'https://trustjonathan.github.io/CHEMISTRY/archive.html'
 } = Astro.props;
-const base = `${import.meta.env.BASE_URL}/`;
 ---
 
 <!doctype html>
@@ -26,9 +25,23 @@ const base = `${import.meta.env.BASE_URL}/`;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content="https://trustjonathan.github.io/CHEMISTRY/chemistry.jpg" />
+    <meta property="og:image" content="https://trustjonathan.github.io/STUDY-HUB/social-preview.png" />
+    <meta property="og:image:secure_url" content="https://trustjonathan.github.io/STUDY-HUB/social-preview.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Study Hub connects Biology, Chemistry, and Mathematics notes with exam practice." />
     <meta property="og:type" content="website" />
-    <link rel="icon" href={`${base}logo.png`} type="image/png" />
+    <meta property="og:site_name" content="Study Hub" />
+    <meta property="og:locale" content="en_UG" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://trustjonathan.github.io/STUDY-HUB/social-preview.png" />
+    <meta name="twitter:image:alt" content="Study Hub connects Biology, Chemistry, and Mathematics notes with exam practice." />
+    <link rel="icon" type="image/svg+xml" href="https://trustjonathan.github.io/STUDY-HUB/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://trustjonathan.github.io/STUDY-HUB/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://trustjonathan.github.io/STUDY-HUB/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -52,7 +65,7 @@ const base = `${import.meta.env.BASE_URL}/`;
           <a href="#archive" aria-current="page">Archive</a>
         </nav>
         <a class="brand" href="https://trustjonathan.github.io/STUDY-HUB/" aria-label="Study Hub home">
-          <img src={`${base}logo.png`} width="38" height="38" alt="" />
+          <img src="https://trustjonathan.github.io/STUDY-HUB/favicon.svg" width="38" height="38" alt="" />
           <span>Study Hub</span>
         </a>
         <nav class="header-actions" aria-label="Archive actions">
@@ -114,7 +127,7 @@ const base = `${import.meta.env.BASE_URL}/`;
       </div>
       <div class="footer-brand">
         <a class="brand" href="https://trustjonathan.github.io/CHEMISTRY/archive.html">
-          <img src={`${base}logo.png`} width="32" height="32" alt="" />
+          <img src="https://trustjonathan.github.io/STUDY-HUB/favicon.svg" width="32" height="32" alt="" />
           <span>Study Hub / Chemistry</span>
         </a>
         <p>Free Chemistry study resources for focused revision.</p>
