@@ -225,9 +225,14 @@ main { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
   .section-heading > p { margin-top: 8px; }
   .archive-controls { grid-template-columns: 1fr 1fr; }
   .search-field { grid-column: 1 / -1; }
-  .archive-browser { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .resource-index-panel { position: static; max-height: 250px; }
-  .resource-index { max-height: 198px; }
+  .archive-browser { grid-template-columns: minmax(96px, 0.36fr) minmax(0, 0.64fr); align-items: start; gap: 10px; }
+  .resource-index-panel { position: sticky; top: 10px; max-height: calc(100vh - 20px); max-height: calc(100dvh - 20px); }
+  .resource-index-heading { gap: 4px; padding: 10px 7px 8px; }
+  .resource-index-heading h3 { font-size: 0.78rem; }
+  .resource-index-heading > span { font-size: 0.7rem; }
+  .resource-index-item { grid-template-columns: 24px minmax(0, 1fr); gap: 4px; padding: 8px 5px; }
+  .resource-index-number { font-size: 0.62rem; }
+  .resource-index-title { font-size: 0.68rem; }
   .contribute-band { align-items: flex-start; flex-direction: column; margin: 0 0 48px; padding: 26px 22px; }
   .site-footer { grid-template-columns: 1fr 1fr; padding: 24px 20px; }
   .site-footer p { margin: 0; }
