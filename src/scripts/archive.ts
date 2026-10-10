@@ -152,6 +152,8 @@ if (archive) {
     const url = new URL('https://trustjonathan.github.io/STUDY-HUB/full_page_flipbook_viewer/index.html');
     url.searchParams.set('file', publicObjectUrl(item));
     url.searchParams.set('title', item.title || item.original_filename || 'Chemistry resource');
+    url.searchParams.set('anon_key', anonKey);
+    url.searchParams.set('turnstile_key', turnstileSiteKey);
     return url.href;
   }
 
